@@ -1,0 +1,8 @@
+{
+  "version": 2,
+  "builds": [{ "src": "./server.js", "users": "@vercel/node" }],
+  "env": {
+    "DATABASE_URL": "@database_url",
+    "PORT": "3000"
+  }
+}
