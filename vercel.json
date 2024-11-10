@@ -7,7 +7,7 @@
     }
   ],
   "env": {
-    "DATABASE_URL": "@database_url"
+    "POSTGRES_URL": "@database_url"
   },
-  "rewrites": [{ "source": "/(.*)", "destination": "/api" }]
+  "rewrites": [{ "source": "/(.*)", "destination": "server.js" }]
 }
