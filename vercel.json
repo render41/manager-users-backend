@@ -7,7 +7,8 @@
     }
   ],
   "env": {
-    "POSTGRES_URL": "postgres://default:Nx3e2BdWqQsD@ep-autumn-grass-a4z7owzt-pooler.us-east-1.aws.neon.tech:5432/verceldb?sslmode=require"
+    "POSTGRES_URL": "@database_url",
+    "POSTGRES_PRISMA_URL": "@database_url"
   },
   "rewrites": [{ "source": "/(.*)", "destination": "server.js" }]
 }
