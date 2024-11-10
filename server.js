@@ -42,5 +42,4 @@ app.post("/users", async (req, res) => {
 
 app.listen(port, () => {
   console.log(`Server is running in: ${addressHttp}`);
-  console.log(`Front-End is running in: ${addressFront}`);
 });
