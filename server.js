@@ -7,7 +7,7 @@ const app = express();
 const port = process.env.PORT || 3001;
 
 const addressHttp = `http://localhost:${port}`;
-const addressFront = `http://localhost:5173`;
+const addressFront = process.env.FRONTEND_URL || `http://localhost:5173`; // Frontend URL configurada
 
 // Usar uma instância única do Prisma no Vercel em produção
 let prisma;
@@ -21,7 +21,26 @@ if (process.env.NODE_ENV === "production") {
   prisma = global.prisma;
 }
 
-app.use(cors({ origin: addressFront }));
+// Log de erros de conexão com o Prisma
+async function checkPrismaConnection() {
+  try {
+    await prisma.$connect();
+    console.log("Conexão com o banco de dados estabelecida com sucesso.");
+  } catch (error) {
+    console.error("Erro ao conectar ao banco de dados:", error);
+  }
+}
+
+checkPrismaConnection();
+
+// Configuração de CORS (permitir cookies)
+app.use(
+  cors({
+    origin: addressFront, // Permitindo o frontend específico
+    credentials: true, // Permitir envio de cookies
+  })
+);
+
 app.use(express.json());
 
 // Rota para verificar se a conexão está funcionando
@@ -35,8 +54,8 @@ app.get("/users", async (req, res) => {
     const users = await prisma.user.findMany();
     res.json(users);
   } catch (error) {
-    console.log(error);
-    res.status(500).send("Error in server.");
+    console.error("Erro ao buscar usuários:", error);
+    res.status(500).send("Erro no servidor.");
   }
 });
 
@@ -49,8 +68,8 @@ app.post("/users", async (req, res) => {
     });
     res.status(201).json(user);
   } catch (error) {
-    console.log(error);
-    res.status(500).send("Error in server.");
+    console.error("Erro ao criar usuário:", error);
+    res.status(500).send("Erro no servidor.");
   }
 });
 
